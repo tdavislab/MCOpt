@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcopt"
+version = "0.5.0"
+authors = [
+  {name = "Carson Storm", email = "carson.storm@outlook.com"}
+]
+readme = "README.md"
+dependencies = [
+  "numpy",
+  "pandas",
+  "scikit-image",
+  "matplotlib",
+  "tqdm",
+  "networkx",
+  "POT"
+]
+
+# [project.scripts]
+# mcpipeline = "mcpipeline.main:main"
+
+[tool.setuptools]
+packages = ["mcopt", "mcpipeline"]
