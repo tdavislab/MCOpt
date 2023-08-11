@@ -12,7 +12,8 @@
 				"ms-toolsai.jupyter",
 				"njpwerner.autodocstring",
 				"tamasfe.even-better-toml",
-				"EditorConfig.EditorConfig"
+				"EditorConfig.EditorConfig",
+				"ms-python.black-formatter"
 			],
 			"settings": {
 				"python.defaultInterpreterPath": "/home/vscode/.venv/bin/python"

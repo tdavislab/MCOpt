@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "Paraview",
         "Separatrices"
     ],
     "editor.formatOnSave": true,
@@ -7,5 +8,6 @@
         "editor.defaultFormatter": "ms-python.black-formatter"
     },
     "editor.insertSpaces": true,
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "python.analysis.typeCheckingMode": "basic"
 }
