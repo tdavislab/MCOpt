@@ -81,8 +81,7 @@ class MorseGraph(nx.Graph):
 		raise NotImplementedError()
 
 	def __init__(self, critical_nodes : Set[int]):
-		super().__init__()
-		self.critical_nodes = critical_nodes
+		super().__init__(critical_nodes = critical_nodes)
 
 	def sample(self, rate: float|int, mode: str = 'step'):
 		graph = MorseGraph(self.critical_nodes)
@@ -143,6 +142,45 @@ class MorseGraph(nx.Graph):
 		assert all(graph.has_node(n) for n in self.critical_nodes)
 
 		return graph
+
+	def to_mpn(self, hist: str = 'uniform', dist: str = 'step') -> MetricProbabilityNetwork:
+		X = np.array(self.nodes())
+		X.sort()
+
+		if hist == 'uniform':
+			measure = np.ones(X.shape[0]) / X.shape[0]
+		elif hist == 'degree':
+			degs = np.array([self.degree(n) for n in X])
+
+			measure = degs / degs.sum()
+		else:
+			raise ValueError(f'Unrecognized histogram type {hist}')
+
+		metric = np.zeros(shape=(X.shape[0], X.shape[0]), dtype=float)
+
+		if dist == 'step':
+			lens = dict(nx.all_pairs_shortest_path_length(self))
+
+			for u_i, u in enumerate(X):
+				for v_i, v in enumerate(X):
+					metric[u_i, v_i] = lens[u][v]
+		elif dist == 'geo':
+			lens = dict(nx.all_pairs_dijkstra_path_length(
+				self,
+				weight=lambda u, v, _: np.linalg.norm(self.nodes(data='pos2')[u] - self.nodes(data='pos2')[v])
+			))
+
+			for u_i, u in enumerate(X):
+				for v_i, v in enumerate(X):
+					metric[u_i, v_i] = lens[u][v]
+		elif dist == 'adj':
+			for u_i, u in enumerate(X):
+				for v_i, v in enumerate(X):
+					metric[u_i, v_i] = int(v in self.adj[u])
+		else:
+			raise ValueError(f'Unrecognized distance type {dist}')
+
+		return MetricProbabilityNetwork(X, measure, metric)
 
 	def node_color_by_position(self) -> Dict[int, float]:
 		return {n : np.linalg.norm(pos) for n, pos in self.nodes(data='pos2')}
@@ -263,42 +301,3 @@ class MorseGraph(nx.Graph):
 
 		ax.set_axis_off()
 		ax.set_aspect('equal', adjustable='box')
-
-	def to_mpn(self, hist: str = 'uniform', dist: str = 'step') -> MetricProbabilityNetwork:
-		X = np.array(self.nodes())
-		X.sort()
-
-		if hist == 'uniform':
-			measure = np.ones(X.shape[0]) / X.shape[0]
-		elif hist == 'degree':
-			degs = np.array([self.degree(n) for n in X])
-
-			measure = degs / degs.sum()
-		else:
-			raise ValueError(f'Unrecognized histogram type {hist}')
-
-		metric = np.zeros(shape=(X.shape[0], X.shape[0]), dtype=float)
-
-		if dist == 'step':
-			lens = dict(nx.all_pairs_shortest_path_length(self))
-
-			for u_i, u in enumerate(X):
-				for v_i, v in enumerate(X):
-					metric[u_i, v_i] = lens[u][v]
-		elif dist == 'geo':
-			lens = dict(nx.all_pairs_dijkstra_path_length(
-				self,
-				weight=lambda u, v, _: np.linalg.norm(self.nodes(data='pos2')[u] - self.nodes(data='pos2')[v])
-			))
-
-			for u_i, u in enumerate(X):
-				for v_i, v in enumerate(X):
-					metric[u_i, v_i] = lens[u][v]
-		elif dist == 'adj':
-			for u_i, u in enumerate(X):
-				for v_i, v in enumerate(X):
-					metric[u_i, v_i] = int(v in self.adj[u])
-		else:
-			raise ValueError(f'Unrecognized distance type {dist}')
-
-		return MetricProbabilityNetwork(X, measure, metric)
