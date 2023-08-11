@@ -8,8 +8,10 @@ from typing import NamedTuple, Dict
 from pathlib import Path
 
 import pandas as pd
+from numpy.typing import NDArray
+import numpy as np
 
-from vtkmodules.vtkCommonCore import vtkIdList
+from vtkmodules.vtkCommonCore import vtkIdList, VTK_DOUBLE
 from vtkmodules.vtkCommonDataModel import (
     vtkDataObject,
     vtkImageData,
@@ -20,8 +22,11 @@ from vtkmodules.vtkCommonDataModel import (
     vtkUnstructuredGrid,
 )
 from vtkmodules.vtkCommonExecutionModel import vtkAlgorithm, vtkAlgorithmOutput
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
 from vtkmodules.vtkIOXML import *
 from vtkmodules.numpy_interface import dataset_adapter
+from vtkmodules.util.numpy_support import numpy_to_vtk
+import vtk
 
 __all__ = ["VTKData", "VTKTable", "VTKPolyData"]
 
@@ -211,6 +216,23 @@ class VTKTable(VTKData):
 
 class VTKPolyData(VTKData):
     """A wrapper for VTK polygon data."""
+
+    @staticmethod
+    def make_plane(scalars: NDArray[np.float_]):
+        assert scalars.ndim == 2
+
+        plane = vtkPlaneSource()
+        plane.SetResolution(scalars[0] - 1, scalars[1] - 1)
+        plane.SetOrigin([0, 0, 0])
+        plane.SetPoint1(scalars.shape[0], 0, 0)
+        plane.SetPoint2(0, scalars.shape[1], 0)
+
+        data = numpy_to_vtk(scalars.ravel(), deep=True, array_type=VTK_DOUBLE)
+        data.SetName("data")
+
+        plane.GetOutput().GetPointData().SetScalars(data)
+
+        return VTKPolyData(plane)
 
     def __init__(self, src: vtkAlgorithm, port: int = 0) -> None:
         super().__init__(src, port)

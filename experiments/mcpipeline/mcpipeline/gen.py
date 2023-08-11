@@ -7,7 +7,7 @@ from typing import Any, Tuple, Union, cast
 from numpy.typing import NDArray
 import numpy as np
 
-__all__ = ["Sinusoidal", "Distance", "Normal"]
+__all__ = ["Sinusoidal", "Distance", "Normal", "Smooth", "Noise", "GaussianNoise"]
 
 
 def Sinusoidal(shape: Tuple[int, int], npeaks: int = 3) -> NDArray[np.float_]:
@@ -57,3 +57,14 @@ def GaussianNoise(
     rng = np.random.default_rng(random_state)
 
     return rng.normal(size=shape)
+
+
+def Smooth(arr: NDArray[np.float_], sigma: int = 1) -> NDArray[np.float_]:
+    # XXX: Do we really need to install this entire package for this one function?
+    import skimage.filters
+
+    return skimage.filters.gaussian(arr, sigma)  # type: ignore
+
+
+def Noise(shape: Tuple[int, int], scale: float = 1, **kwargs) -> NDArray[np.float_]:
+    return Smooth(GaussianNoise(shape, **kwargs) * scale)
