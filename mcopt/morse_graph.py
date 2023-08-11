@@ -238,60 +238,6 @@ class MorseGraph(nx.Graph):
 		ax.set_axis_off()
 		ax.set_aspect('equal', adjustable='box')
 
-	def _draw(
-		self,
-		ax,
-		cmap='black',
-		node_color: Optional[Colors] = None,
-		node_size: int = 40,
-		critical_scale: float = 1,
-		rotation: float = 0,
-		**kwargs,
-	):
-		if not node_color:
-			node_color = self.node_color_by_position()
-			
-		if type(node_color) is dict:
-			node_color = np.array([node_color[n] for n in self.nodes()])
-
-		node_size = np.array([
-			node_size * critical_scale if n in self.critical_nodes else node_size
-			for n in self.nodes()
-		])
-
-		# Allow for nodes that should be given a "bad color" to have `nan` values.
-		vmin = np.nanmin(node_color)
-		vmax = np.nanmax(node_color)
-
-		# Transform positions
-		pos = {n : p for n, p in self.nodes(data='pos2')}
-
-		if rotation != 0:
-			theta = np.radians(rotation)
-			
-			r = np.array([
-			[np.cos(theta), -np.sin(theta)],
-			[np.sin(theta), np.cos(theta)],
-			])
-			
-			pos = {n : r.dot(p) for n, p in pos.items()}
-
-		nx.draw(
-			self,
-			ax=ax,
-			cmap = cmap,
-			pos = pos,
-			node_color = node_color,
-			node_size = node_size,
-			
-			vmin=vmin,
-			vmax=vmax,
-			alpha=[1],
-			**kwargs
-		)
-
-		ax.set_aspect('equal', adjustable='box')
-	
 	def to_mpn(self, hist: str = 'uniform', dist: str = 'step') -> MetricProbabilityNetwork:
 		X = np.array(self.nodes())
 		X.sort()

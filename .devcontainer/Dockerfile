@@ -2,7 +2,7 @@ FROM ghcr.io/stormymcstorm/ttk-python:py3.9-ttk1.1.0
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
   && apt-get install -y \
-    sudo git curl unzip zip wget \
+    sudo git curl unzip zip wget make \
     gcc g++ \
   && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 

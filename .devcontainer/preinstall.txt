@@ -1,6 +1,6 @@
-matplotlib
-networkx
-numpy
-POT
+numpy~=1.25.2
+networkx~=3.1
+POT~=0.9.1
+matplotlib~=3.7.2
 ipykernel
 ipywidgets
