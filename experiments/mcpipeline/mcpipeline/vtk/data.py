@@ -5,7 +5,6 @@ Wrappers for VTK data that add some utilities and allow for caching
 from __future__ import annotations
 
 from typing import NamedTuple, Dict
-import os
 from pathlib import Path
 
 import pandas as pd
