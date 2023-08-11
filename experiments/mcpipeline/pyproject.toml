@@ -3,20 +3,20 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mcopt"
+name = "mcpipeline"
 authors = [
   {name = "Carson Storm", email = "carson.storm@outlook.com"}
 ]
 readme = "README.md"
 dependencies = [
-  "numpy~=1.25.2",
-  "networkx~=3.1",
-  "POT~=0.9.1"
+	"matplotlib",
+	"kneed"
 ]
 dynamic = ["version"]
 
 [tool.setuptools]
-packages = ["mcopt"]
+packages = ["mcpipeline"]
+
 
 [tool.setuptools.dynamic]
-version = {attr = "mcopt.__version__"}
+version = {attr = "mcpipeline.__version__"}
