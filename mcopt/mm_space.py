@@ -1,6 +1,7 @@
 """
 Definitions for Metric Measure Networks
 """
+
 from __future__ import annotations
 
 import numpy as np

@@ -1,14 +1,14 @@
+"""
+TODO
+"""
+
 from __future__ import annotations
 from typing import Set, Dict, Optional, Union
 from inspect import signature
 
-
 import numpy as np
 from numpy.typing import ArrayLike
 import networkx as nx
-import matplotlib
-import matplotlib.colors
-# import matplotlib.pyplot as plt
 
 from mcopt.mm_space import (
 	MetricProbabilityNetwork, 
@@ -22,12 +22,38 @@ __all__ = [
 	'MorseGraph'
 ]
 
-if 'black' not in matplotlib.colormaps:
-	matplotlib.colormaps.register(matplotlib.colors.ListedColormap(['black']), name='black')
-
 class MorseGraph(nx.Graph):
+	"""A Morse Graph, represented as a [networkx.Graph](https://networkx.org/documentation/stable/reference/classes/graph.html).
+
+	TODO
+
+	Attributes
+	----------
+	critical_nodes : Set[int]
+		A set of nodes which should be considered critical points.
+	"""
+
 	critical_nodes: Set[int]
-	
+
+	@staticmethod
+	def attribute_cost_matrix(src: MorseGraph, dest: MorseGraph) -> np.ndarray:
+		X = list(src.nodes())
+		X.sort()
+		
+		Y = list(dest.nodes())
+		Y.sort()
+		
+		X_attrs = list(src.nodes(data='pos2')[n] for n in X)
+		Y_attrs = list(dest.nodes(data='pos2')[n] for n in Y)
+		
+		M = np.zeros((len(X), len(Y)), dtype=float)
+		
+		for u_i, u in enumerate(X):
+			for v_i, v in enumerate(Y):
+				M[u_i, v_i] = np.linalg.norm(X_attrs[u_i] - Y_attrs[v_i])
+		
+		return M
+
 	def __init__(self, critical_nodes : Set[int]):
 		super().__init__()
 		self.critical_nodes = critical_nodes
@@ -118,7 +144,7 @@ class MorseGraph(nx.Graph):
 	
 	def draw(
 		self,
-		ax: matplotlib.axes.Axes,
+		ax,
 		cmap = 'black',
 		rotation: float = 0,
 		node_size: int = 40,
@@ -214,7 +240,7 @@ class MorseGraph(nx.Graph):
 
 	def _draw(
 		self,
-		ax: matplotlib.axes.Axes,
+		ax,
 		cmap='black',
 		node_color: Optional[Colors] = None,
 		node_size: int = 40,
@@ -305,21 +331,4 @@ class MorseGraph(nx.Graph):
 		
 		return MetricProbabilityNetwork(X, measure, metric)
 	
-	@staticmethod
-	def attribute_cost_matrix(src: MorseGraph, dest: MorseGraph) -> np.ndarray:
-		X = list(src.nodes())
-		X.sort()
-		
-		Y = list(dest.nodes())
-		Y.sort()
-		
-		X_attrs = list(src.nodes(data='pos2')[n] for n in X)
-		Y_attrs = list(dest.nodes(data='pos2')[n] for n in Y)
-		
-		M = np.zeros((len(X), len(Y)), dtype=float)
-		
-		for u_i, u in enumerate(X):
-			for v_i, v in enumerate(Y):
-				M[u_i, v_i] = np.linalg.norm(X_attrs[u_i] - Y_attrs[v_i])
-		
-		return M
+	
