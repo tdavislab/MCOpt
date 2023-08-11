@@ -11,16 +11,9 @@ authors = [
 readme = "README.md"
 dependencies = [
   "numpy",
-  "pandas",
-  "scikit-image",
-  "matplotlib",
-  "tqdm",
   "networkx",
   "POT"
 ]
-
-# [project.scripts]
-# mcpipeline = "mcpipeline.main:main"
 
 [tool.setuptools]
 packages = ["mcopt", "mcpipeline"]
