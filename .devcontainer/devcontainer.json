@@ -1,21 +1,22 @@
 {
-  "name": "MCOpt Devcontainer",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "remoteUser": "vscode",
-  "postStartCommand": "pip install -e .",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-python.python",
-        "bungcip.better-toml"
-      ],
-      "settings": {
-        "python.defaultInterpreterPath": "/home/vscode/.venv/bin/python"
-      }
-    }
-  },
-  // Uncomment this to enable gpu usage
-  // "runArgs": ["--gpus", "all"]
+	"name": "MCOpt Devcontainer",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"remoteUser": "vscode",
+	"postStartCommand": "pip install -e .[PIPE]",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-toolsai.jupyter",
+				"njpwerner.autodocstring",
+				"tamasfe.even-better-toml",
+				"EditorConfig.EditorConfig"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/home/vscode/.venv/bin/python"
+			}
+		}
+	}
 }
