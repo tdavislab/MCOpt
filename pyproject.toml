@@ -16,4 +16,4 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["mcopt", "mcpipeline"]
+packages = ["mcopt"]
