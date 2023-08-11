@@ -9,8 +9,11 @@ authors = [
 ]
 readme = "README.md"
 dependencies = [
-	"matplotlib",
-	"kneed"
+	"matplotlib~=3.7.2",
+	"kneed~=0.8.5",
+	"pandas~=2.0.3",
+	"joblib~=1.3.2",
+	"tqdm~=4.66.1"
 ]
 dynamic = ["version"]
 

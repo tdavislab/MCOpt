@@ -1,5 +1,11 @@
 {
-  "cSpell.words": [
-    "Separatrices"
-  ]
+    "cSpell.words": [
+        "Separatrices"
+    ],
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "editor.insertSpaces": true,
+    "editor.defaultFormatter": "ms-python.black-formatter"
 }
