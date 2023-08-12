@@ -3,7 +3,7 @@ A collection of VTK Filter wrappers
 """
 
 from abc import ABC, abstractmethod
-from experiments.mcpipeline.mcpipeline.vtk.data import VTKData
+from mcpipeline.vtk.data import VTKData
 
 from vtkmodules.vtkFiltersGeneral import (
     vtkWarpScalar,

@@ -11,6 +11,8 @@ from mcpipeline.vtk import WarpFilter
 from mcpipeline.datasets.dataset import GenDataset
 import mcpipeline.gen as gen
 
+__all__ = ["Sinusoidal"]
+
 
 class Sinusoidal(GenDataset):
     """TODO"""

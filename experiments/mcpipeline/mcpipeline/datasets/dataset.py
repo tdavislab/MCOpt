@@ -10,13 +10,14 @@ import inspect
 import os
 from pathlib import Path
 import textwrap
+import re
 
 from numpy.typing import NDArray
 import numpy as np
-from experiments.mcpipeline.mcpipeline.vtk import VTKData, VTKFilter
-
 
 from mcpipeline.vtk import VTKFilter, VTKData, VTKPolyData
+
+__all__ = ["Dataset", "GenDataset"]
 
 
 class Dataset(ABC):
@@ -68,13 +69,16 @@ class Dataset(ABC):
         if doc is not None:
             doc = textwrap.dedent(doc)
 
-        return f"# {self.name.capitalize()}\n{doc}"
+        return f"# {self.name.title()}\n{doc}"
 
     def save(self, output_dir: Path):
         os.makedirs(output_dir, exist_ok=True)
 
+        name = re.sub(r"[^\w\s]", "", self.name)
+        name = re.sub(r"\s+", "_", name)
+
         for t, dat in self.steps.items():
-            dat.save(output_dir / f"{self.name}{t}", append_ext=True)
+            dat.save(output_dir / f"{name}{t}", append_ext=True)
 
 
 class GenDataset(Dataset, ABC):

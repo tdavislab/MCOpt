@@ -165,7 +165,8 @@ class VTKData:
         iface = get_io_iface(ty)
 
         if path.suffix == "" and append_ext:
-            path.with_suffix(f".{iface.ext}")
+            # BUG: Not appending suffix for some reason
+            path = path.with_suffix(f".{iface.ext}")
 
         writer = iface.writer()
         writer.SetInputConnection(self.conn())
@@ -222,7 +223,7 @@ class VTKPolyData(VTKData):
         assert scalars.ndim == 2
 
         plane = vtkPlaneSource()
-        plane.SetResolution(scalars[0] - 1, scalars[1] - 1)
+        plane.SetResolution(scalars.shape[0] - 1, scalars.shape[1] - 1)
         plane.SetOrigin([0, 0, 0])
         plane.SetPoint1(scalars.shape[0], 0, 0)
         plane.SetPoint2(0, scalars.shape[1], 0)
