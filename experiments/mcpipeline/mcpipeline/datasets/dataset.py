@@ -6,6 +6,9 @@ from __future__ import annotations
 
 from typing import Optional, List, Dict, Iterable
 from abc import ABC, abstractmethod
+import inspect
+import os
+from pathlib import Path
 import textwrap
 
 from numpy.typing import NDArray
@@ -57,15 +60,21 @@ class Dataset(ABC):
         raise NotImplementedError()
 
     @property
-    @abstractmethod
-    def _desc(self) -> str:
-        """A description for the dataset in Markdown."""
-        raise NotImplementedError()
-
-    @property
     def description(self) -> str:
         """A formatted description for the dataset."""
-        return textwrap.dedent(self._desc)
+
+        doc = inspect.getdoc(self)
+
+        if doc is not None:
+            doc = textwrap.dedent(doc)
+
+        return f"# {self.name.capitalize()}\n{doc}"
+
+    def save(self, output_dir: Path):
+        os.makedirs(output_dir, exist_ok=True)
+
+        for t, dat in self.steps.items():
+            dat.save(output_dir / f"{self.name}{t}", append_ext=True)
 
 
 class GenDataset(Dataset, ABC):
