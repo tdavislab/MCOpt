@@ -1,5 +1,0 @@
-matplotlib
-networkx
-numpy
-ipykernel
-ipywidgets
