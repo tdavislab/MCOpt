@@ -1,4 +1,4 @@
-FROM ghcr.io/stormymcstorm/ttk-python:py3.9-ttk1.1.0
+FROM ghcr.io/stormymcstorm/ttk-python:ttk1.1.0-vtk9.2.6-py3.9-bullseye
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
   && apt-get install -y \

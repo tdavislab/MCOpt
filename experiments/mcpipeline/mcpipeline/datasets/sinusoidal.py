@@ -17,17 +17,20 @@ __all__ = ["Sinusoidal"]
 class Sinusoidal(GenDataset):
     """TODO"""
 
-    def __init__(self):
-        super().__init__([WarpFilter(scale_factor=50)])
+    def __init__(
+        self,
+        npeaks: int = 3,
+    ):
+        super().__init__([WarpFilter(scale_factor=50)], gen_kwargs=dict(npeaks=npeaks))
 
     @property
     def name(self) -> str:
         return "sinusoidal"
 
-    def generate_steps(self) -> Iterable[NDArray[np.float_]]:
+    def generate_steps(self, npeaks=3) -> Iterable[NDArray[np.float_]]:
         shape = (100, 100)
 
-        initial = gen.Sinusoidal(shape=shape, npeaks=3) * 0.5
+        initial = gen.Sinusoidal(shape=shape, npeaks=npeaks) * 0.5
         initial += gen.Distance(shape=shape) * -0.5
 
         yield initial + gen.Noise(shape=shape, scale=0.1, random_state=42)

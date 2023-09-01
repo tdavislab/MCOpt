@@ -12,6 +12,7 @@ from vtkmodules.vtkFiltersGeneral import (
 )
 from vtkmodules.vtkImagingCore import vtkImageClip
 from vtkmodules.vtkCommonTransforms import vtkTransform
+import vtk
 
 from mcpipeline.vtk.data import VTKData
 

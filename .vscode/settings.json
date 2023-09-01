@@ -1,7 +1,19 @@
 {
     "cSpell.words": [
+        "linestyles",
+        "matplotlib",
+        "mcpipeline",
         "Paraview",
-        "Separatrices"
+        "pyplot",
+        "Separatrices",
+        "timesteps",
+        "topo",
+        "vlines",
+        "xlabel",
+        "xlim",
+        "xticks",
+        "ylabel",
+        "ylim"
     ],
     "editor.formatOnSave": true,
     "[python]": {

@@ -17,6 +17,9 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[project.optional-dependencies]
+VTK = ["vtk"]
+
 [tool.setuptools]
 packages = ["mcpipeline"]
 
